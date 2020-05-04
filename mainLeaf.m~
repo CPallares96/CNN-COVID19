@@ -185,7 +185,7 @@ while(i<(rango-1)*(rango))
 end
 
 vecIndexIP=1:con;
-%imshow(reshape(vecValueP,sqrt(rango*rango/4),[]));
+imshow(reshape(vecValueP,126,[]));
 %POOLING
 outputCapaPooling=sparse(vecValueP);
 
