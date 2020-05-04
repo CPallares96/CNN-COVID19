@@ -1,5 +1,5 @@
 %Primera capa %
-XY=imread('testcovid2.png');
+XY=imread('xxxxx 2.png');
 XY=imresize(XY,[256 256]);
 imagen=rgb2gray(XY);
 filtro=[1,-3,-3;-1,3,-1;0,-2,-2];%filtro invertido *****1
@@ -76,13 +76,13 @@ end
 
 w1=sparse(vecIndexI,vecIndexJ,vecValue); %DEFINICIÓN MATRIZ DE PESOS
 argRelu=sparse(im2double(imagenVec)*w1); %CONVOLUCION(IMAGEN,FILTRO)
-n=1; %Aumenta los valores para el input
+n=2; %Aumenta los valores para el input
 inputCapa2=reshape(n*funcionAct(argRelu),rango,[]);
 %imshow(reshape(inputCapa2,254,[]));
 
 
 
-%MATRIZ DE PESOS CAPA 1
+%MATRIZ DE PESOS CAPA 2
 
 [imageSizeCapa2,asd]=size(inputCapa2);
 filtro2=[0,3,3;-5,-5,0;-3,0,1];
@@ -157,9 +157,9 @@ end
 
 w2=sparse(vecIndexII,vecIndexJJ,vecValuee); %DEFINICIÓN MATRIZ DE PESOS
 argRelu=sparse(reshape(inputCapa2,1,[])*w2); %CONVOLUCION(IMAGEN,FILTRO)
-n2=1; %Aumenta los valores para el input
+n2=255; %Aumenta los valores para el input
 inputCapa3=funcionAct(argRelu);
-imshow(reshape(inputCapa3,rango,[]));
+%imshow(reshape(inputCapa3,rango,[]));
 
 %POOLING
 
@@ -185,7 +185,7 @@ while(i<(rango-1)*(rango))
 end
 
 vecIndexIP=1:con;
-imshow(reshape(vecValueP,126,[]));
+%imshow(reshape(vecValueP,sqrt(rango*rango/4),[]));
 %POOLING
 outputCapaPooling=sparse(vecValueP);
 
