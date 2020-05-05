@@ -186,8 +186,32 @@ end
 
 vecIndexIP=1:con;
 %imshow(reshape(2*vecValueP,sqrt(rango*rango/4),[]));
+outputCapaPooling=sparse(2*vecValueP);
 %POOLING
-outputCapaPooling=sparse(vecValueP);
+
+
+
+%FULLY CONNECTED NN LAYER
+[x,y]=size(outputCapaPooling);
+wnet=sparse(randi([-3,3],y,2));
+salida=funcionAct(outputCapaPooling*wnet);
+y=[1,0];
+lr=0.01;
+%while(dot(salida,y)>0)
+    
+    wnet=wnet-lr*sparse(functionActD(outputCapaPooling',wnet',2)'*diag(salida-y));
+    w2=w2-lr*functionActD(sparse(reshape(inputCapa2,1,[])),w2,2)*functionActD(outputCapaPooling,wnet',1)*diag(salida-y);
+    
+    %dot(salida,y)
+%end
+
+
+
+
+%
+
+
+
 
 
 

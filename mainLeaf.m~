@@ -1,6 +1,6 @@
 %Primera capa %
 XY=imread('xxxxx 2.png');
-XY=imresize(XY,[256 256]);
+XY=imresize(XY,[512 512]);
 imagen=rgb2gray(XY);
 filtro=[1,-3,-3;-1,3,-1;0,-2,-2];%filtro invertido *****1
 imagenVec=reshape(imagen,1,[]);
@@ -76,7 +76,7 @@ end
 
 w1=sparse(vecIndexI,vecIndexJ,vecValue); %DEFINICIÓN MATRIZ DE PESOS
 argRelu=sparse(im2double(imagenVec)*w1); %CONVOLUCION(IMAGEN,FILTRO)
-n=2; %Aumenta los valores para el input
+n=1; %Aumenta los valores para el input
 inputCapa2=reshape(n*funcionAct(argRelu),rango,[]);
 %imshow(reshape(inputCapa2,254,[]));
 
@@ -157,8 +157,8 @@ end
 
 w2=sparse(vecIndexII,vecIndexJJ,vecValuee); %DEFINICIÓN MATRIZ DE PESOS
 argRelu=sparse(reshape(inputCapa2,1,[])*w2); %CONVOLUCION(IMAGEN,FILTRO)
-n2=255; %Aumenta los valores para el input
-inputCapa3=funcionAct(argRelu);
+n2=300; %Aumenta los valores para el input
+inputCapa3=n*funcionAct(argRelu);
 %imshow(reshape(inputCapa3,rango,[]));
 
 %POOLING
@@ -173,7 +173,7 @@ while(i<(rango-1)*(rango))
     con=con+1;
     j=i+rango;
     vec=[inputCapa3(i),inputCapa3(j),inputCapa3(i+1),inputCapa3(j+1)];
-    vecValueP(con)=max(vec);
+    vecValueP(con)=sum(vec)/4;
     
     if rem(i+1,rango)==0
         i=i+2+rango;
@@ -185,9 +185,33 @@ while(i<(rango-1)*(rango))
 end
 
 vecIndexIP=1:con;
-%imshow(reshape(vecValueP,sqrt(rango*rango/4),[]));
+%imshow(reshape(2*vecValueP,sqrt(rango*rango/4),[]));
+outputCapaPooling=sparse(2*vecValueP);
 %POOLING
-outputCapaPooling=sparse(vecValueP);
+
+
+
+%FULLY CONNECTED NN LAYER
+[x,y]=size(outputCapaPooling);
+wnet=sparse(randi([-3,3],y,2));
+salida=funcionAct(outputCapaPooling*wnet);
+y=[1,0];
+lr=0.01;
+%while(dot(salida,y)>0)
+    
+    wnet=wnet-lr*sparse(functionActD(outputCapaPooling',wnet',2)'*diag(salida-y));
+    w2=w2-lr*sparse(functionActD(sparse(reshape(inputCapa2,1,[])),w2,2)*functionActD(outputCapaPooling,wnet',1)*diag(salida-y));
+    
+    %dot(salida,y)
+%end
+
+
+
+
+%
+
+
+
 
 
 
