@@ -204,7 +204,7 @@ q=sparse(reshape(inputCapa2,1,[]));
     w1=w1-lr*sparse(functionActD(a2',w1',2)'*diag(a1-y));
     %back del pooling
     w3=w3-lr*functionActD(a3,w3,2)*functionActD(a2,w1',1)*diag(a1-y);
-    w4=w4-lr*functionActD(a5,w4,2)*functionActD(a4,w3',1)*functionActD(a2,w1',1)'*(a1-y);
+    w4=w4-lr*functionActD(a5',w4',2)*functionActD(a4,w3',1)*functionActD(a2,w1',1)'*(a1-y);
     
     %dot(salida,y)
 %end
