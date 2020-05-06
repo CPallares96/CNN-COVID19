@@ -75,7 +75,7 @@ while(i<(imageSize-2)*imageSize)
 end
 
 w4=sparse(vecIndexI,vecIndexJ,vecValue); %DEFINICIÓN MATRIZ DE PESOS
-a5=sparse(im2double(imagenVec));
+a5=im2double(imagenVec);
 argRelu=sparse(a5*w4); %CONVOLUCION(IMAGEN,FILTRO)
 n=1; %Aumenta los valores para el input
 inputCapa2=reshape(n*funcionAct(argRelu),rango,[]);
@@ -157,15 +157,18 @@ while(i<(imageSizeCapa2-2)*imageSizeCapa2)
 end
 
 w3=sparse(vecIndexII,vecIndexJJ,vecValuee); %DEFINICIÓN MATRIZ DE PESOS
-a4=reshape(inputCapa2,1,[]);
+inputCapa2=reshape(inputCapa2,1,[]);
+[sizet,tt]=size(inputCapa2);
+a4=sparse(inputCapa2);
+
 argRelu=sparse(a4*w3); %CONVOLUCION(IMAGEN,FILTRO)
 n2=300; %Aumenta los valores para el input
-a3=n*funcionAct(argRelu);
+a3=sparse(n*funcionAct(argRelu));
 %imshow(reshape(inputCapa3,rango,[]));
 
 %POOLING
 
-toPool=reshape(a3,1,[]);
+%toPool=reshape(a3,1,[]);
 vecValueP=1:2;
 
 i=1;
@@ -196,18 +199,48 @@ a2=sparse(2*vecValueP);
 %FULLY CONNECTED NN LAYER
 [x,y]=size(a2);
 w1=sparse(randi([-3,3],y,2));
-a1=funcionAct(a2*w1);
+a1=sparse(funcionAct(a2*w1));
 y=[1,0];
 lr=0.01;
-q=sparse(reshape(inputCapa2,1,[]));
+%q=sparse(reshape(inputCapa2,1,[]));
+vecIndexI=0;
+vecIndexII=0;
+vecIndexJ=0;
+vecIndexJJ=0;
+vecIndexIP=0;
+vecValueP=0;
+vecValuee=0;
+vecValue=0;
+
 %while(dot(salida,y)>0)
-    w1=w1-lr*sparse(functionActD(a2',w1',2)'*diag(a1-y));
     %back del pooling
-    w3=w3-lr*functionActD(a3,w3,2)*functionActD(a2,w1',1)*diag(a1-y);
-    w4=w4-lr*functionActD(a5',w4',2)*functionActD(a4,w3',1)*functionActD(a2,w1',1)'*(a1-y);
+    %w3=w3-lr*functionActD(a3,w3,2)*functionActD(a2,w1',1)*diag(a1-y);
     
+    %z= -1*(exp(a5*w4))*w4';
+    x=a5*w4;
+    %%%%% Maraña
+    
+    k=find(x);
+    [N,n]=size(x);
+    Yo=zeros(1,n);
+    Yo(k)=-1.*(exp(x(k))); 
+    Yo=sparse(Yo*w4');
+    w=(1+exp(-a5*w4))*(1+exp(-a5*w4))';        
+    %%%%% Maraña
+    
+    
+    zw=sparse((Yo*(1/w)));
+    zf=sparse(functionActD(a4,w3',1));
+    
+    %w4p=sparse()
+    %w4p=260100*262144=510*510*512*512
+    w1=w1-lr*sparse(functionActD(a2',w1',2)'*diag(a1-y));
+    disp('hi');
+    %w4=w4-lr*(zf'*zw);  
     %dot(salida,y)
 %end
+
+
 
 
 

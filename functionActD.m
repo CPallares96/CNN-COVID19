@@ -5,7 +5,7 @@ if w==1
 end
 
 if w==2
-    z=sparse(-1*(exp((y*x))*x'));
+    z=-1*(exp((y*x))*x');
     z=z./((1+exp((-x'*y'))) * (1+exp(-x'*y')'));
     
 end
