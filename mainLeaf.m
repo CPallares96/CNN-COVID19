@@ -219,22 +219,33 @@ vecValue=0;
     %z= -1*(exp(a5*w4))*w4';
     x=a5*w4;
     %%%%% Maraña
+    k=find(x);
+    [N,n]=size(x);
+    Yo=sparse(zeros(1,n));
+    Yo(k)=-1.*(exp(x(k))); 
+    Yo=sparse(sparse(Yo')*sparse(a5));
+    w=(1+exp(-a5*w4))*(1+exp(-a5*w4))'; 
+    zw=sparse((Yo*(1/w)));
+    %%%%% Maraña
     
+    
+    %%%%% Maraña
+    x=a4*w3';
     k=find(x);
     [N,n]=size(x);
     Yo=zeros(1,n);
     Yo(k)=-1.*(exp(x(k))); 
-    Yo=sparse(Yo*w4');
-    w=(1+exp(-a5*w4))*(1+exp(-a5*w4))';        
+    Yo=sparse(Yo*w3');
+    w=z./((1+exp(-a4*w3')) * (1+exp(-a4*w3'))');
+    zf=sparse(Yo*(1/w));
+    
+    %zf=sparse(functionActD(a4,w3',1));
     %%%%% Maraña
-    
-    
-    zw=sparse((Yo*(1/w)));
-    zf=sparse(functionActD(a4,w3',1));
+    w1=w1-lr*sparse(functionActD(a2',w1',2)'*diag(a1-y));
+    %w4=w4-lr*(zf'*zw);
     
     %w4p=sparse()
     %w4p=260100*262144=510*510*512*512
-    w1=w1-lr*sparse(functionActD(a2',w1',2)'*diag(a1-y));
     disp('hi');
     %w4=w4-lr*(zf'*zw);  
     %dot(salida,y)
