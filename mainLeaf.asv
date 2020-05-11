@@ -79,7 +79,7 @@ a5=sparse(im2double(imagenVec));
 argRelu=sparse(a5*w4); %CONVOLUCION(IMAGEN,FILTRO)
 n=1; %Aumenta los valores para el input
 inputCapa2=reshape(n*reLu(argRelu),rango,[]);
-%imshow(reshape(inputCapa2,508,[]));
+%imshow(reshape(inputCapa2,254,[]));
 
 
 
@@ -211,10 +211,9 @@ a1=sparse(funcionAct(a2*w1));
 eo=[1,0];
 lr=0.01;
 w1=w1 - lr*sparse(functionActD(a2',w1',2)'*diag(a1-eo));
-w3=w3 - lr*(a4'*a3);
-w4=w4 - lr*((w3*a3')*a5)';
-% ts1=taylorSigmoidD(a5,w4,2)'*a3;
-% ts2=taylorSigmoidD(a4,w3,1)';
+%w3=w3 - lr*taylorSigmoidD(a4,w3,2)'*(a3);
+ts1=taylorSigmoidD(a5,w4,2)'*a3;
+ts2=taylorSigmoidD(a4,w3,1)';
 %w4=w4 - lr*(taylorSigmoidD(a5,w4,2)'*a3)*taylorSigmoidD(a4,w3,1)';
 
 % lr
