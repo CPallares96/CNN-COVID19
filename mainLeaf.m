@@ -208,7 +208,7 @@ w1=sparse(randi([-3,3],y,2));
 a1=sparse(funcionAct(a2*w1));
 eo=[1,0];
 lr=0.01;
-% w1=w1 - lr*sparse(functionActD(a2',w1',2)'*diag(a1-eo));
+w1=w1 - lr*sparse(functionActD(a2',w1',2)'*diag(a1-eo));
 % w3=w3 - lr*(a4'*a3);
 % w4=w4 - lr*((w3*a3')*a5)';
 % ts1=taylorSigmoidD(a5,w4,2)'*a3;
@@ -216,11 +216,22 @@ lr=0.01;
 %w4=w4 - lr*(taylorSigmoidD(a5,w4,2)'*a3)*taylorSigmoidD(a4,w3,1)';
 
 % lr
-vec=1:2;
+vec1=1:2;
 for x=1:2322576
-    
-    vec(1,x)=a4(1,vecIndexII(x))*a3(1,vecIndexJJ(x));
+    vec1(1,x)=(a4(1,vecIndexII(x))*a3(1,vecIndexJJ(x)))/10;
 end
+
+w3 = w3 - sparse(vecIndexII,vecIndexJJ,vec1);
+
+
+comp1=(w3*a3')';
+vec2=1:3;
+for y=1:2340900
+    vec2(1,y)=(comp1(1,vecIndexJ(y))*a5(1,vecIndexI(y)))/10;
+end
+
+w4 = w4 - sparse(vecIndexI,vecIndexJ,vec2);
+
 
 % for i = 1:2322576
 %     if vec(1,i)~=0
