@@ -222,11 +222,11 @@ for x=1:2322576
     vec(1,x)=a4(1,vecIndexII(x))*a3(1,vecIndexJJ(x));
 end
 
-% for i = 1:2322576
-%     if vec(1,i)~=0
-%         vec(1,i)
-%     end
-% end
+for i = 1:2322576
+    if vec(1,i)~=0
+        vec(1,)
+    end
+end
 
 
 %W4(I,J) = W4(I,J) – TS1(I,:)*TS2(:,J)
