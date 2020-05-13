@@ -1,7 +1,9 @@
+%ACTUALIZADO 3.07PM 13/05/2020
 %Primera capa %
-XY=imread('xxxxx 2.png');
-XY=imresize(XY,[32 32]);
-imagen=rgb2gray(XY);
+XY=imread('666.png');
+XY=imresize(XY,[64 64]);
+%imagen=rgb2gray(XY);
+imagen=(XY);
 filtro=[0,7,0;9,9,1;1,0,0];%filtro invertido *****1
 imagenVec=reshape(imagen,1,[]);
 filtroVec=reshape(filtro,1,[]);
@@ -84,7 +86,8 @@ inputCapa2=0.30*(reshape(n*reLu(argRelu),rango,[])); %PENDIENTE EL 0.30 QUE RESA
 %MATRIZ DE PESOS CAPA 2
 
 [imageSizeCapa2,asd]=size(inputCapa2);
-filtro2=[0,3,3;-5,-5,0;-3,0,1];
+%filtro2=[-1,0,1;2,0,0;-1,-2,-1]; %El mas firme en convergencia
+filtro2=[1,-1,2;-1,1,3;-1,4,1];
 filtroVec2=reshape(filtro2,1,[]);
 
 [x,y]=size(filtro2);
@@ -162,8 +165,9 @@ a4=sparse(inputCapa2);
 argRelu=sparse(a4*w3); %CONVOLUCION(IMAGEN,FILTRO)
 n2=300; %Aumenta los valores para el input
 a3=reLu(argRelu);
+a3=a3*0.03;
 %a3=sparse(n*funcionAct(argRelu));
-%imshow(reshape(full(a3),rango,[]));
+imshow(reshape(full(a3),rango,[]));
 
 %POOLING
 
@@ -204,7 +208,7 @@ a2=sparse(2*vecValuePx);
 [x,y]=size(a2);
 w1=sparse(randi([-3,3],y,2));
 a1=sparse(reLu(a2*w1));
-eo=[1,0];
+eo=[0,1];
 lr=0.01;
 % w3=w3 - lr*(a4'*a3);
 % w4=w4 - lr*((w3*a3')*a5)';
@@ -215,12 +219,13 @@ lr=0.01;
 %ENTRENAMIENTO
 az=a1;
 b=0;
-while(dot(eo-a1,eo-a1)/2>0.08)
-    b=b+1;
+tic
+while(dot(eo-a1,eo-a1)/2>0.001)
+    b=b+1
     w1=w1 - lr*sparse(a2'*(a1-eo));
 
     vec1=1:2;
-    for x=1:7056
+    for x=1:32400
         vec1(1,x)=(a4(1,vecIndexII(x))*a3(1,vecIndexJJ(x)));
     end
 
@@ -228,7 +233,7 @@ while(dot(eo-a1,eo-a1)/2>0.08)
 
     comp1=(w3*a3')';
     vec2=1:3;
-    for y=1:8100
+    for y=1:34596
         vec2(1,y)=(comp1(1,vecIndexJ(y))*a5(1,vecIndexI(y)));
     end
 
@@ -263,8 +268,9 @@ while(dot(eo-a1,eo-a1)/2>0.08)
     a2=sparse(2*vecValuePx);
     a1=sparse(reLu(a2*w1));
     dot(eo-a1,eo-a1)/2
-    b
 end
+toc
+
 
 % for i = 1:2322576
 %     if vec(1,i)~=0
