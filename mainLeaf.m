@@ -1,7 +1,7 @@
 %ACTUALIZADO 3.07PM 13/05/2020
 %Primera capa %
 XY=imread('666.png');
-XY=imresize(XY,[64 64]);
+XY=imresize(XY,[128 128]);
 %imagen=rgb2gray(XY);
 imagen=(XY);
 filtro=[0,7,0;9,9,1;1,0,0];%filtro invertido *****1
@@ -225,7 +225,7 @@ while(dot(eo-a1,eo-a1)/2>0.001)
     w1=w1 - lr*sparse(a2'*(a1-eo));
 
     vec1=1:2;
-    for x=1:32400
+    for x=1:138384
         vec1(1,x)=(a4(1,vecIndexII(x))*a3(1,vecIndexJJ(x)));
     end
 
@@ -233,7 +233,7 @@ while(dot(eo-a1,eo-a1)/2>0.001)
 
     comp1=(w3*a3')';
     vec2=1:3;
-    for y=1:34596
+    for y=1:142884
         vec2(1,y)=(comp1(1,vecIndexJ(y))*a5(1,vecIndexI(y)));
     end
 
