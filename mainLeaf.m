@@ -1,6 +1,6 @@
 %Primera capa %
 XY=imread('xxxxx 2.png');
-XY=imresize(XY,[512 512]);
+XY=imresize(XY,[32 32]);
 imagen=rgb2gray(XY);
 filtro=[0,7,0;9,9,1;1,0,0];%filtro invertido *****1
 imagenVec=reshape(imagen,1,[]);
@@ -78,7 +78,7 @@ a5=sparse(im2double(imagenVec));
 argRelu=sparse(a5*w4); %CONVOLUCION(IMAGEN,FILTRO)
 n=1; %Aumenta los valores para el input
 inputCapa2=0.30*(reshape(n*reLu(argRelu),rango,[])); %PENDIENTE EL 0.30 QUE RESALTA COSAS
-imshow(reshape(full(inputCapa2),510,[]));
+%imshow(reshape(full(inputCapa2),510,[]));
 
 
 %MATRIZ DE PESOS CAPA 2
@@ -172,7 +172,6 @@ vecValuePx=1:2;
 
 i=1;
 con=0;
-nnz(a3)
 while(i<(rango-1)*(rango))
     con=con+1;
     j=i+rango;
@@ -194,7 +193,6 @@ while(i<(rango-1)*(rango))
     end
     
 end
-nnz(a3)
 vecIndexIP=1:con;
 %imshow(reshape(2*vecValueP,sqrt(rango*rango/4),[]));
 a2=sparse(2*vecValuePx);
@@ -205,33 +203,68 @@ a2=sparse(2*vecValuePx);
 %FULLY CONNECTED NN LAYER
 [x,y]=size(a2);
 w1=sparse(randi([-3,3],y,2));
-a1=sparse(funcionAct(a2*w1));
+a1=sparse(reLu(a2*w1));
 eo=[1,0];
 lr=0.01;
-w1=w1 - lr*sparse(functionActD(a2',w1',2)'*diag(a1-eo));
 % w3=w3 - lr*(a4'*a3);
 % w4=w4 - lr*((w3*a3')*a5)';
 % ts1=taylorSigmoidD(a5,w4,2)'*a3;
 % ts2=taylorSigmoidD(a4,w3,1)';
 %w4=w4 - lr*(taylorSigmoidD(a5,w4,2)'*a3)*taylorSigmoidD(a4,w3,1)';
 
-% lr
-vec1=1:2;
-for x=1:2322576
-    vec1(1,x)=(a4(1,vecIndexII(x))*a3(1,vecIndexJJ(x)))/10;
+%ENTRENAMIENTO
+az=a1;
+b=0;
+while(dot(eo-a1,eo-a1)/2>0.08)
+    b=b+1;
+    w1=w1 - lr*sparse(a2'*(a1-eo));
+
+    vec1=1:2;
+    for x=1:7056
+        vec1(1,x)=(a4(1,vecIndexII(x))*a3(1,vecIndexJJ(x)));
+    end
+
+    w3 = w3 - lr*sparse(vecIndexII,vecIndexJJ,vec1);
+
+    comp1=(w3*a3')';
+    vec2=1:3;
+    for y=1:8100
+        vec2(1,y)=(comp1(1,vecIndexJ(y))*a5(1,vecIndexI(y)));
+    end
+
+    w4 = w4 - lr*sparse(vecIndexI,vecIndexJ,vec2);
+
+    a4=reLu(a5*w4);
+    a3=reLu(a4*w3);
+    
+    while(i<(rango-1)*(rango))
+        con=con+1;
+        j=i+rango;
+        vec=[a3(i),a3(j),a3(i+1),a3(j+1)];
+        vecix=[i,j,i+1,j+1];
+        [m,n]=max(vec);
+        for t=1:4
+            if (t~=n)
+                a3(vecix(t))=0;
+            end
+        end
+
+        vecValuePx(con)=m;
+        if rem(i+1,rango)==0
+            i=i+2+rango;
+        else
+            i=i+2;
+
+        end
+
+    end
+    vecIndexIP=1:con;
+    %imshow(reshape(2*vecValueP,sqrt(rango*rango/4),[]));
+    a2=sparse(2*vecValuePx);
+    a1=sparse(reLu(a2*w1));
+    dot(eo-a1,eo-a1)/2
+    b
 end
-
-w3 = w3 - sparse(vecIndexII,vecIndexJJ,vec1);
-
-
-comp1=(w3*a3')';
-vec2=1:3;
-for y=1:2340900
-    vec2(1,y)=(comp1(1,vecIndexJ(y))*a5(1,vecIndexI(y)))/10;
-end
-
-w4 = w4 - sparse(vecIndexI,vecIndexJ,vec2);
-
 
 % for i = 1:2322576
 %     if vec(1,i)~=0
@@ -241,9 +274,6 @@ w4 = w4 - sparse(vecIndexI,vecIndexJ,vec2);
 
 
 %W4(I,J) = W4(I,J) – TS1(I,:)*TS2(:,J)
-
-
-
 
 % Proceso de backpropagation anterior
 
@@ -266,7 +296,6 @@ w4 = w4 - sparse(vecIndexI,vecIndexJ,vec2);
 %     zw=sparse((Yo*(1/w)));
 %     %%%%% Maraña
 %     
-      
 % 
 % %     %%%%% Maraña optimizar W3
 %     x=a4*w3;
@@ -304,8 +333,6 @@ w4 = w4 - sparse(vecIndexI,vecIndexJ,vec2);
 % %     S1(:,j) = sparse(Yo(:,j));
 % % end
 % 
-
-
 % Proceso de backpropagation anterior
 
 
