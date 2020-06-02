@@ -1,9 +1,10 @@
 %% loadImsFromFolder(root) Method
 %  This method loads all the images within a folder and turns them into
-%  a grayscale image. Expected size of image is 512x512 px
+%  a grayscale image. Expected size of image is 512x512 px.
+%  returns: a double variable representing the loaded image count.
 %  returns: a three-dimesional double array with the first dimension being 
-%           the image number and the other two the image data
-function ims = loadImsFromFolder(root)
+%           the image number and the other two being that image data.
+function [imageCount, ims] = loadImsFromFolder(root)
     % [dir('*.jpg');dir('*.png')], .jpg, .jpeg, .jpe .jif, .jfif, .jfi
     imList = [dir(fullfile(root, '*.png')); ... 
         dir(fullfile(root, '*.jpg')); dir(fullfile(root, '*.jpeg')); ...
@@ -15,5 +16,7 @@ function ims = loadImsFromFolder(root)
         grayscale = mat2gray(image);
         images(im, :, :) = grayscale;
     end
+    [x, ~, ~] = size(images);
+    imageCount = x;
     ims = images;
 end

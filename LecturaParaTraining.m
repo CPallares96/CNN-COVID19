@@ -13,6 +13,5 @@ addpath('./');
     
 %% READ THE SOURCE FOLDER
 root = uigetdir('./*.*', 'Select the folder containing the sample images');
-ims = loadImsFromFolder(root);
-[imageCount, ~, ~] = size(ims);
+[imageCount, ims] = loadImsFromFolder(root);
 fprintf('Loaded %d images\n', imageCount);
