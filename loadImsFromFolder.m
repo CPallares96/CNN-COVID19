@@ -13,8 +13,8 @@ function [imageCount, ims] = loadImsFromFolder(root)
     images = zeros(length(imList), 512, 512);
     for im = 1: 1: length(imList)
         image = imread(fullfile(imList(im).folder, imList(im).name));
-        grayscale = mat2gray(image);
-        images(im, :, :) = grayscale;
+        %grayscale = mat2gray(image);
+        images(im, :, :) = image;
     end
     [x, ~, ~] = size(images);
     imageCount = x;
