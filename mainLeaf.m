@@ -299,7 +299,7 @@ for i=1:conteo
             break
         end
          
-        if r>1 %|| b==1
+        if r<1 %|| b==1
             contix=contix+1;
             break
         end
