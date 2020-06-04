@@ -5,8 +5,9 @@ root="C:\Users\Clon\Desktop\FINAL MINERÍA\CNN-COVID19\Yes Covid\TODO"
 contix=0;
 tic
 for i=1:conteo
+    i
     XY=uint8(squeeze(query(i,:,:)));
-    %XY=imread('corona.png');
+    %XY=imread('ayay.png');
     %imshow(XY)
     XY=imresize(XY,[128 128]);
     size(XY,[128 128]);
