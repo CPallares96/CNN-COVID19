@@ -1,6 +1,6 @@
 %ACTUALIZADO 3.07PM 13/05/2020
 %Primera capa %
-root="C:\Users\Clon\Desktop\FINAL MINERÍA\CNN-COVID19\Yes Covid\TODO"
+root="C:\Users\Clon\Desktop\FINAL MINERÍA\CNN-COVID19\Non Covid\TODO"
 [conteo,query]=loadImsFromFolder(root);
 contix=0;
 tic
@@ -250,7 +250,7 @@ for i=1:conteo
     
     while(dot(eo-a1,eo-a1)/2>0.3)
         b=b+1;
-        w1=w1 - lr*sparse(a2'*(a1-eo));
+        w1=w1 - lr*sparse(a2'*(a1-eo)*0.5);
 
         vec1=1:2;
         for x=1:138384
