@@ -1,4 +1,4 @@
-%ACTUALIZADO 3.07PM 13/05/2020
+%ACTUALIZADO 05/06/2020
 %Primera capa %
 root="C:\Users\Clon\Desktop\FINAL MINERÍA\CNN-COVID19\Non Covid\TODO"
 [conteo,query]=loadImsFromFolder(root);
